@@ -1,15 +1,13 @@
 # PHP Perspective Comment Analyzer API
 
-![Minimal PHP version](https://img.shields.io/packagist/php-v/stajor/perspectiveapi.svg)
-
-PHP library for Perspective Comment Analyzer API.
+PHP library for Perspective Comment Analyzer API. Minimal PHP version is 7.4.
 
 ## Installation
 
 Via Composer:
 
 ```bash
-composer require stajor/perspectiveapi
+composer require inzanty/perspectiveapi
 ```
     
 ## Usage
@@ -56,7 +54,7 @@ print_r($response->attributeScores());
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Stajor/perspectiveapi. 
+Bug reports and pull requests are welcome on GitHub at https://github.com/inzanty/perspectiveapi. 
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
