@@ -1,25 +1,32 @@
-<?php namespace PerspectiveApi;
+<?php
+
+namespace PerspectiveApi;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 
-class CommentsClient {
+class CommentsClient
+{
     const API_URL = 'https://commentanalyzer.googleapis.com/v1alpha1';
 
-    protected $token;
-    protected $comment;
-    protected $languages;
-    protected $context;
-    protected $requestedAttributes;
-    protected $spanAnnotations;
-    protected $doNotStore;
-    protected $clientToken;
-    protected $sessionId;
-    protected $attributeScores;
-    protected $communityId;
+    protected string $token;
+    protected array $comment;
+    protected array $languages;
+    protected array $context;
+    protected array $requestedAttributes;
+    protected bool $spanAnnotations;
+    protected bool $doNotStore;
+    protected string $clientToken;
+    protected string $sessionId;
+    protected array $attributeScores;
+    protected string $communityId;
 
-    public function __construct(string $token) {
+	/**
+	 * @param string $token
+	 */
+    public function __construct(string $token)
+	{
         $this->token = $token;
     }
 
@@ -27,9 +34,10 @@ class CommentsClient {
      * Make an Analyze Comment request
      *
      * @return CommentsResponse
-     * @throws CommentsException
-     */
-    public function analyze(): CommentsResponse {
+     * @throws CommentsException|GuzzleException
+	 */
+    public function analyze(): CommentsResponse
+	{
         $fields = [
             'comment', 'languages', 'requestedAttributes', 'context', 'spanAnnotations', 'doNotStore', 'clientToken',
             'sessionId'
@@ -42,9 +50,10 @@ class CommentsClient {
      * Sending feedback: SuggestCommentScore
      *
      * @return CommentsResponse
-     * @throws CommentsException
-     */
-    public function suggestScore(): CommentsResponse {
+     * @throws CommentsException|GuzzleException
+	 */
+    public function suggestScore(): CommentsResponse
+	{
         $fields = ['comment', 'context', 'attributeScores', 'languages', 'communityId', 'clientToken'];
 
         return $this->request('suggestscore', $fields);
@@ -56,7 +65,8 @@ class CommentsClient {
      * @example ['text' => string, 'type' => string]
      * @param array $comment
      */
-    public function comment(array $comment): void {
+    public function comment(array $comment): void
+	{
         $this->comment = $comment;
     }
 
@@ -66,7 +76,8 @@ class CommentsClient {
      * @example ['entries': [{'text': string, 'type': string}]
      * @param array $context
      */
-    public function context(array $context): void {
+    public function context(array $context): void
+	{
         $this->context = $context;
     }
 
@@ -76,7 +87,8 @@ class CommentsClient {
      * @example [string]
      * @param array $languages
      */
-    public function languages(array $languages): void {
+    public function languages(array $languages): void
+	{
         $this->languages = $languages;
     }
 
@@ -86,7 +98,8 @@ class CommentsClient {
      * @example [string: {'scoreType': string, 'scoreThreshold': float},]
      * @param array $requestedAttributes
      */
-    public function requestedAttributes(array $requestedAttributes): void {
+    public function requestedAttributes(array $requestedAttributes): void
+	{
         $this->requestedAttributes = $requestedAttributes;
     }
 
@@ -96,7 +109,8 @@ class CommentsClient {
      * @example bool
      * @param bool $spanAnnotations
      */
-    public function spanAnnotations(bool $spanAnnotations): void {
+    public function spanAnnotations(bool $spanAnnotations): void
+	{
         $this->spanAnnotations = $spanAnnotations;
     }
 
@@ -106,7 +120,8 @@ class CommentsClient {
      * @example bool
      * @param bool $doNotStore
      */
-    public function doNotStore(bool $doNotStore): void {
+    public function doNotStore(bool $doNotStore): void
+	{
         $this->doNotStore = $doNotStore;
     }
 
@@ -116,7 +131,8 @@ class CommentsClient {
      * @example string
      * @param string $clientToken
      */
-    public function clientToken(string $clientToken) {
+    public function clientToken(string $clientToken)
+	{
         $this->clientToken = $clientToken;
     }
 
@@ -126,7 +142,8 @@ class CommentsClient {
      * @example string
      * @param string $sessionId
      */
-    public function sessionId(string $sessionId) {
+    public function sessionId(string $sessionId)
+	{
         $this->sessionId = $sessionId;
     }
 
@@ -139,7 +156,8 @@ class CommentsClient {
      * }]
      * @param array $attributeScores
      */
-    public function attributeScores(array $attributeScores) {
+    public function attributeScores(array $attributeScores)
+	{
         $this->attributeScores = $attributeScores;
     }
 
@@ -149,7 +167,8 @@ class CommentsClient {
      * @example string
      * @param string $communityId
      */
-    public function communityId(string $communityId) {
+    public function communityId(string $communityId)
+	{
         $this->communityId = $communityId;
     }
 
@@ -158,32 +177,41 @@ class CommentsClient {
      *
      * @param string $method
      * @param array $fields
+     *
      * @return CommentsResponse
-     * @throws CommentsException
+     * @throws CommentsException|GuzzleException
      */
-    protected function request(string $method, array $fields): CommentsResponse {
-        $data   = [];
+    protected function request(string $method, array $fields): CommentsResponse
+	{
+        $data = [];
         $client = new Client([
-            'verify' => false,
             'defaults' => [
                 'headers'  => ['content-type' => 'application/json', 'Accept' => 'application/json']
             ]
         ]);
 
-        foreach ($fields AS $field) {
-            if (isset($this->{$field})) {
+        foreach ($fields AS $field)
+		{
+            if (isset($this->{$field}))
+			{
                 $data[$field] = $this->{$field};
             }
         }
 
-        try {
+        try
+		{
             $response = $client->post(self::API_URL."/comments:{$method}?key={$this->token}", ['json' => $data]);
-        } catch (ClientException | GuzzleException $e) {
+        }
+		catch (ClientException | GuzzleException $e)
+		{
             $error = json_decode($e->getResponse()->getBody(), true);
 
-            if (isset($error['error'])) {
+            if (isset($error['error']))
+			{
                 throw new CommentsException($error['error']['message'], $error['error']['code']);
-            } else {
+            }
+			else
+			{
                 throw $e;
             }
         }

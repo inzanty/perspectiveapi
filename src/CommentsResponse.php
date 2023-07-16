@@ -1,25 +1,36 @@
-<?php namespace PerspectiveApi;
+<?php
 
-class CommentsResponse {
-    protected $response;
+namespace PerspectiveApi;
 
-    public function __construct(array $response) {
+class CommentsResponse
+{
+    protected array $response;
+
+	/**
+	 * @param array $response
+	 */
+    public function __construct(array $response)
+	{
         $this->response = $response;
     }
 
-    public function attributeScores(): ?array {
+    public function attributeScores(): ?array
+	{
         return $this->response['attributeScores'] ?? null;
     }
 
-    public function languages(): ?array {
+    public function languages(): ?array
+	{
         return $this->response['languages'] ?? null;
     }
 
-    public function clientToken(): ?string {
+    public function clientToken(): ?string
+	{
         return $this->response['clientToken'] ?? null;
     }
 
-    public function detectedLanguages(): ?array {
+    public function detectedLanguages(): ?array
+	{
         return $this->response['detectedLanguages'] ?? null;
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace PerspectiveApi;
+<?php
+
+namespace PerspectiveApi;
 
 use Exception;
 
