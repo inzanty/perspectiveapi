@@ -1,6 +1,6 @@
 {
-    "name": "stajor/perspectiveapi",
-    "description": "What if technology could help improve conversations online",
+    "name": "inzanty/perspectiveapi",
+    "description": "What if technology could help improve conversations online. Fork of original repository: stajor/perspectiveapi.",
     "type": "library",
     "require": {
         "php": ">=7.1",
