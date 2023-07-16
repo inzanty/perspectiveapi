@@ -8,216 +8,227 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class CommentsClient
 {
-    const API_URL = 'https://commentanalyzer.googleapis.com/v1alpha1';
+	const API_URL = 'https://commentanalyzer.googleapis.com/v1alpha1';
 
-    protected string $token;
-    protected array $comment;
-    protected array $languages;
-    protected array $context;
-    protected array $requestedAttributes;
-    protected bool $spanAnnotations;
-    protected bool $doNotStore;
-    protected string $clientToken;
-    protected string $sessionId;
-    protected array $attributeScores;
-    protected string $communityId;
+	protected string $token;
+	protected array $comment;
+	protected array $languages;
+	protected array $context;
+	protected array $requestedAttributes;
+	protected bool $spanAnnotations;
+	protected bool $doNotStore;
+	protected string $clientToken;
+	protected string $sessionId;
+	protected array $attributeScores;
+	protected string $communityId;
 
 	/**
 	 * @param string $token
 	 */
-    public function __construct(string $token)
+	public function __construct(string $token)
 	{
-        $this->token = $token;
-    }
+		$this->token = $token;
+	}
 
-    /**
-     * Make an Analyze Comment request
-     *
-     * @return CommentsResponse
-     * @throws CommentsException|GuzzleException
+	/**
+	 * Make an Analyze Comment request
+	 *
+	 * @return CommentsResponse
+	 * @throws CommentsException|GuzzleException
 	 */
-    public function analyze(): CommentsResponse
+	public function analyze(): CommentsResponse
 	{
-        $fields = [
-            'comment', 'languages', 'requestedAttributes', 'context', 'spanAnnotations', 'doNotStore', 'clientToken',
-            'sessionId'
-        ];
+		$fields = [
+			'comment', 'languages', 'requestedAttributes', 'context', 'spanAnnotations', 'doNotStore', 'clientToken',
+			'sessionId'
+		];
 
-        return $this->request('analyze', $fields);
-    }
+		return $this->request('analyze', $fields);
+	}
 
-    /**
-     * Sending feedback: SuggestCommentScore
-     *
-     * @return CommentsResponse
-     * @throws CommentsException|GuzzleException
+	/**
+	 * Sending feedback: SuggestCommentScore
+	 *
+	 * @return CommentsResponse
+	 * @throws CommentsException|GuzzleException
 	 */
-    public function suggestScore(): CommentsResponse
+	public function suggestScore(): CommentsResponse
 	{
-        $fields = ['comment', 'context', 'attributeScores', 'languages', 'communityId', 'clientToken'];
+		$fields = ['comment', 'context', 'attributeScores', 'languages', 'communityId', 'clientToken'];
 
-        return $this->request('suggestscore', $fields);
-    }
+		return $this->request('suggestscore', $fields);
+	}
 
-    /**
-     * The text to score. This is assumed to be utf8 raw text of the text to be checked.
-     *
-     * @example ['text' => string, 'type' => string]
-     * @param array $comment
-     */
-    public function comment(array $comment): void
+	/**
+	 * The text to score. This is assumed to be utf8 raw text of the text to be checked.
+	 *
+	 * @param array $comment
+	 *
+	 * @example ['text' => string, 'type' => string]
+	 */
+	public function comment(array $comment): void
 	{
-        $this->comment = $comment;
-    }
+		$this->comment = $comment;
+	}
 
-    /**
-     * A list of objects providing the context for comment
-     *
-     * @example ['entries': [{'text': string, 'type': string}]
-     * @param array $context
-     */
-    public function context(array $context): void
+	/**
+	 * A list of objects providing the context for comment
+	 *
+	 * @param array $context
+	 *
+	 * @example ['entries': [{'text': string, 'type': string}]
+	 */
+	public function context(array $context): void
 	{
-        $this->context = $context;
-    }
+		$this->context = $context;
+	}
 
-    /**
-     * A list of ISO 631-1 two-letter language codes specifying the language(s) that comment is in
-     *
-     * @example [string]
-     * @param array $languages
-     */
-    public function languages(array $languages): void
+	/**
+	 * A list of ISO 631-1 two-letter language codes specifying the language(s) that comment is in
+	 *
+	 * @param array $languages
+	 *
+	 * @example [string]
+	 */
+	public function languages(array $languages): void
 	{
-        $this->languages = $languages;
-    }
+		$this->languages = $languages;
+	}
 
-    /**
-     * A map from model's attribute name to a configuration object
-     *
-     * @example [string: {'scoreType': string, 'scoreThreshold': float},]
-     * @param array $requestedAttributes
-     */
-    public function requestedAttributes(array $requestedAttributes): void
+	/**
+	 * A map from model's attribute name to a configuration object
+	 *
+	 * @param array $requestedAttributes
+	 *
+	 * @example [string: {'scoreType': string, 'scoreThreshold': float},]
+	 */
+	public function requestedAttributes(array $requestedAttributes): void
 	{
-        $this->requestedAttributes = $requestedAttributes;
-    }
+		$this->requestedAttributes = $requestedAttributes;
+	}
 
-    /**
-     * A boolean value that indicates if the request should return spans that describe the scores for each part of the
-     * text
-     * @example bool
-     * @param bool $spanAnnotations
-     */
-    public function spanAnnotations(bool $spanAnnotations): void
+	/**
+	 * A boolean value that indicates if the request should return spans that describe the scores for each part of the
+	 * text
+	 *
+	 * @param bool $spanAnnotations
+	 *
+	 * @example bool
+	 */
+	public function spanAnnotations(bool $spanAnnotations): void
 	{
-        $this->spanAnnotations = $spanAnnotations;
-    }
+		$this->spanAnnotations = $spanAnnotations;
+	}
 
-    /**
-     * Whether the API is permitted to store comment and context from this request
-     *
-     * @example bool
-     * @param bool $doNotStore
-     */
-    public function doNotStore(bool $doNotStore): void
+	/**
+	 * Whether the API is permitted to store comment and context from this request
+	 *
+	 * @param bool $doNotStore
+	 *
+	 * @example bool
+	 */
+	public function doNotStore(bool $doNotStore): void
 	{
-        $this->doNotStore = $doNotStore;
-    }
+		$this->doNotStore = $doNotStore;
+	}
 
-    /**
-     * An opaque token that is echoed back in the response
-     *
-     * @example string
-     * @param string $clientToken
-     */
-    public function clientToken(string $clientToken)
+	/**
+	 * An opaque token that is echoed back in the response
+	 *
+	 * @param string $clientToken
+	 *
+	 * @example string
+	 */
+	public function clientToken(string $clientToken)
 	{
-        $this->clientToken = $clientToken;
-    }
+		$this->clientToken = $clientToken;
+	}
 
-    /**
-     * An opaque session id
-     *
-     * @example string
-     * @param string $sessionId
-     */
-    public function sessionId(string $sessionId)
+	/**
+	 * An opaque session id
+	 *
+	 * @param string $sessionId
+	 *
+	 * @example string
+	 */
+	public function sessionId(string $sessionId)
 	{
-        $this->sessionId = $sessionId;
-    }
+		$this->sessionId = $sessionId;
+	}
 
-    /**
-     * A map from model attribute name to per-attribute score objects
-     *
-     * @example [string: {
-     *  'summaryScore': {'value': float,'type': string},
-     *  'spanScores': [{'begin': int,'end': int,'score': {'value': float,'type': string}}]
-     * }]
-     * @param array $attributeScores
-     */
-    public function attributeScores(array $attributeScores)
+	/**
+	 * A map from model attribute name to per-attribute score objects
+	 *
+	 * @param array $attributeScores
+	 *
+	 * @example [string: {
+	 *          'summaryScore': {'value': float,'type': string},
+	 *          'spanScores': [{'begin': int,'end': int,'score': {'value': float,'type': string}}]
+	 *          }]
+	 */
+	public function attributeScores(array $attributeScores)
 	{
-        $this->attributeScores = $attributeScores;
-    }
+		$this->attributeScores = $attributeScores;
+	}
 
-    /**
-     * Opaque identifier associating this score suggestion with a particular community
-     *
-     * @example string
-     * @param string $communityId
-     */
-    public function communityId(string $communityId)
+	/**
+	 * Opaque identifier associating this score suggestion with a particular community
+	 *
+	 * @param string $communityId
+	 *
+	 * @example string
+	 */
+	public function communityId(string $communityId)
 	{
-        $this->communityId = $communityId;
-    }
+		$this->communityId = $communityId;
+	}
 
-    /**
-     * Send request to API
-     *
-     * @param string $method
-     * @param array $fields
-     *
-     * @return CommentsResponse
-     * @throws CommentsException|GuzzleException
-     */
-    protected function request(string $method, array $fields): CommentsResponse
+	/**
+	 * Send request to API
+	 *
+	 * @param string $method
+	 * @param array  $fields
+	 *
+	 * @return CommentsResponse
+	 * @throws CommentsException|GuzzleException
+	 */
+	protected function request(string $method, array $fields): CommentsResponse
 	{
-        $data = [];
-        $client = new Client([
-            'defaults' => [
-                'headers'  => ['content-type' => 'application/json', 'Accept' => 'application/json']
-            ]
-        ]);
+		$data = [];
+		$client = new Client([
+			'defaults' => [
+				'headers' => ['content-type' => 'application/json', 'Accept' => 'application/json']
+			]
+		]);
 
-        foreach ($fields AS $field)
+		foreach ($fields as $field)
 		{
-            if (isset($this->{$field}))
+			if (isset($this->{$field}))
 			{
-                $data[$field] = $this->{$field};
-            }
-        }
+				$data[$field] = $this->{$field};
+			}
+		}
 
-        try
+		try
 		{
-            $response = $client->post(self::API_URL."/comments:{$method}?key={$this->token}", ['json' => $data]);
-        }
-		catch (ClientException | GuzzleException $e)
+			$response = $client->post(self::API_URL . "/comments:{$method}?key={$this->token}", ['json' => $data]);
+		}
+		catch (ClientException|GuzzleException $e)
 		{
-            $error = json_decode($e->getResponse()->getBody(), true);
+			$error = json_decode($e->getResponse()->getBody(), true);
 
-            if (isset($error['error']))
+			if (isset($error['error']))
 			{
-                throw new CommentsException($error['error']['message'], $error['error']['code']);
-            }
+				throw new CommentsException($error['error']['message'], $error['error']['code']);
+			}
 			else
 			{
-                throw $e;
-            }
-        }
+				throw $e;
+			}
+		}
 
-        $result = json_decode($response->getBody(), true);
+		$result = json_decode($response->getBody(), true);
 
-        return new CommentsResponse($result);
-    }
+		return new CommentsResponse($result);
+	}
 }
